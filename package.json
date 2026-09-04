@@ -1,0 +1,19 @@
+{
+  "name": "exaroton-discord-bot",
+  "version": "1.0.0",
+  "description": "Bot de Discord que avisa cuando el servidor de exaroton se prende/apaga, cuando jugadores entran/salen, y cuántos créditos se gastaron por sesión.",
+  "type": "module",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "list-servers": "node list-servers.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.16.3",
+    "exaroton": "^2.0.2",
+    "dotenv": "^16.4.5"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
