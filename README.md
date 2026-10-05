@@ -1,91 +1,91 @@
-# Bot de Discord para tu servidor de exaroton
+# Discord Bot for Your exaroton Server
 
-Avisa en un canal de Discord:
-- 🟢 Cuando el servidor se enciende
-- 🔴 Cuando se apaga (o crashea)
-- 🟢 Cuando un jugador entra (con la carita de su skin)
-- 🔴 Cuando un jugador sale (con la carita de su skin)
-- ⚠️ Cuando un jugador lleva 10+ minutos (configurable) solo en el servidor, mencionando a un rol de Discord
+Posts notifications in a Discord channel:
+- 🟢 When the server starts
+- 🔴 When it stops (or crashes)
+- 🟢 When a player joins (with their skin's face)
+- 🔴 When a player leaves (with their skin's face)
+- ⚠️ When a player has been alone on the server for 10+ minutes (configurable), mentioning a Discord role
 
-Usa las librerías **oficiales** de exaroton y discord.js, conectadas por websocket, así que los avisos son en tiempo real (no hay que estar revisando cada tantos segundos).
+It uses the **official** exaroton and discord.js libraries, connected via websocket, so notifications are real-time (no need to poll every few seconds).
 
-## 1. Requisitos
+## 1. Requirements
 
-- [Node.js](https://nodejs.org/) versión 22 o más nueva.
-- Un servidor de Discord donde tengas permisos para agregar bots.
-- Una cuenta de [exaroton](https://exaroton.com/) con al menos un servidor.
+- [Node.js](https://nodejs.org/) version 22 or newer.
+- A Discord server where you have permission to add bots.
+- An [exaroton](https://exaroton.com/) account with at least one server.
 
-## 2. Crear el bot de Discord
+## 2. Create the Discord bot
 
-1. Ve a https://discord.com/developers/applications y da clic en **New Application**. Ponle un nombre (ej. "Exaroton Notifier").
-2. En el menú izquierdo, ve a **Bot**. Da clic en **Reset Token** y copia el token — lo vas a necesitar en el paso 5. **No lo compartas con nadie.**
-3. No necesitas activar ningún "Privileged Gateway Intent" — este bot solo manda mensajes, no lee nada.
-4. Ve a **OAuth2 > URL Generator**. En "Scopes" marca `bot`. En "Bot Permissions" marca `Send Messages` y `Embed Links`.
-5. Copia la URL que se genera abajo, ábrela en el navegador, y agrega el bot a tu servidor de Discord.
+1. Go to https://discord.com/developers/applications and click **New Application**. Give it a name (e.g. "Exaroton Notifier").
+2. In the left menu, go to **Bot**. Click **Reset Token** and copy the token — you'll need it in step 5. **Don't share it with anyone.**
+3. You don't need to enable any "Privileged Gateway Intent" — this bot only sends messages, it doesn't read anything.
+4. Go to **OAuth2 > URL Generator**. Under "Scopes", check `bot`. Under "Bot Permissions", check `Send Messages` and `Embed Links`.
+5. Copy the URL generated at the bottom, open it in your browser, and add the bot to your Discord server.
 
-## 3. Obtener el ID del canal
+## 3. Get the channel ID
 
-1. En Discord, ve a **Configuración de usuario > Avanzado** y activa **Modo desarrollador**.
-2. Clic derecho sobre el canal donde quieres los avisos (el de Minecraft) > **Copiar ID del canal**.
+1. In Discord, go to **User Settings > Advanced** and turn on **Developer Mode**.
+2. Right-click the channel where you want the notifications (your Minecraft one) > **Copy Channel ID**.
 
-## 3.5. (Opcional) Configurar el aviso de "jugando solo"
+## 3.5. (Optional) Set up the "playing alone" alert
 
-Si quieres que el bot mencione un rol cuando alguien lleva rato jugando solo:
+If you want the bot to mention a role when someone has been playing alone for a while:
 
-1. Con el Modo desarrollador ya activado, ve a **Configuración del servidor > Roles**, clic derecho sobre el rol (ej. `@Minecraft`) > **Copiar ID del rol**.
-2. **Importante**: entra a ese mismo rol en Configuración del servidor > Roles, y asegúrate de que la opción **"Permitir que cualquiera mencione este rol"** esté activada. Si está desactivada, el bot puede escribir el `@Minecraft` en el mensaje pero Discord no le va a mandar notificación a nadie — el mensaje se ve igual pero no "suena".
-3. Si prefieres no tocar esa opción del rol, la alternativa es darle al bot el permiso **"Mention @everyone, @here, and All Roles"** al invitarlo (paso 2.4) — con eso puede mencionar el rol sin importar su configuración.
+1. With Developer Mode already on, go to **Server Settings > Roles**, right-click the role (e.g. `@Minecraft`) > **Copy Role ID**.
+2. **Important**: open that same role in Server Settings > Roles and make sure the **"Allow anyone to @mention this role"** option is turned on. If it's off, the bot can write `@Minecraft` in the message, but Discord won't notify anyone — the message looks the same but doesn't "ping".
+3. If you'd rather not change that role setting, the alternative is to give the bot the **"Mention @everyone, @here, and All Roles"** permission when inviting it (step 2.4) — with that, it can mention the role regardless of its settings.
 
-Si no configuras esto, el bot funciona exactamente igual, solo que sin el aviso de jugador solo.
+If you don't set this up, the bot works exactly the same, just without the playing-alone alert.
 
-## 4. Obtener tus datos de exaroton
+## 4. Get your exaroton details
 
-1. Ve a https://exaroton.com/account/ y genera un API Token.
-2. Para encontrar el ID de tu servidor, lo más fácil es usar el script incluido — sigue el paso 5 primero, pon tu `EXAROTON_TOKEN` en el `.env`, y corre:
+1. Go to https://exaroton.com/account/ and generate an API Token.
+2. To find your server ID, the easiest way is to use the included script — follow step 5 first, put your `EXAROTON_TOKEN` in the `.env`, and run:
    ```
    npm run list-servers
    ```
-   Esto te imprime todos tus servidores con su ID correspondiente.
+   This prints all your servers with their corresponding IDs.
 
-## 5. Configurar el proyecto
+## 5. Configure the project
 
-1. Copia `.env.example` a un archivo nuevo llamado `.env`.
-2. Rellena las 4 variables obligatorias:
+1. Copy `.env.example` to a new file called `.env`.
+2. Fill in the 4 required variables:
    ```
-   DISCORD_TOKEN=el_token_de_tu_bot
-   DISCORD_CHANNEL_ID=el_id_del_canal
-   EXAROTON_TOKEN=tu_api_token_de_exaroton
-   EXAROTON_SERVER_ID=el_id_de_tu_servidor
+   DISCORD_TOKEN=your_bot_token
+   DISCORD_CHANNEL_ID=the_channel_id
+   EXAROTON_TOKEN=your_exaroton_api_token
+   EXAROTON_SERVER_ID=your_server_id
    ```
-   Y si quieres el aviso de jugador solo, también:
+   And if you want the playing-alone alert, also:
    ```
-   DISCORD_MINECRAFT_ROLE_ID=el_id_del_rol
+   DISCORD_MINECRAFT_ROLE_ID=the_role_id
    SOLO_ALERT_MINUTES=10
    ```
-3. Instala las dependencias:
+3. Install the dependencies:
    ```
    npm install
    ```
 
-## 6. Correrlo
+## 6. Run it
 
 ```
 npm start
 ```
 
-Si todo está bien configurado, en la consola vas a ver algo como:
+If everything is configured correctly, you'll see something like this in the console:
 
 ```
 Conectado a Discord como TuBot#1234
 Escuchando el servidor "MiServidor" (estado actual: 0)
 ```
 
-Deja la ventana abierta — mientras el proceso esté corriendo, el bot está escuchando.
+Leave the window open — as long as the process is running, the bot is listening.
 
-## 7. Dejarlo corriendo 24/7
+## 7. Keep it running 24/7
 
-Para que avise incluso cuando tu compu esté apagada, necesitas correr esto en algo que esté siempre prendido: un servidorcito VPS barato, un Raspberry Pi en casa, o un servicio gratuito/económico de hosting para Node.js (Railway, Render, etc.). Si solo lo corres en tu laptop, va a funcionar, pero solo mientras la laptop esté prendida y con internet.
+For it to send notifications even when your computer is off, you need to run it on something that's always on: a cheap VPS, a Raspberry Pi at home, or a free/low-cost Node.js hosting service (Railway, Render, etc.). If you only run it on your laptop, it'll work, but only while the laptop is on and connected to the internet.
 
-## Notas y límites
+## Notes and limitations
 
-- **Lista de jugadores**: la API de exaroton marca que la lista de jugadores conectados "no siempre está disponible". En la enorme mayoría de los casos sí llega bien, pero si alguna vez ves que un aviso de entrada/salida no llegó, es de este lado.
+- **Player list**: the exaroton API notes that the list of connected players "is not always available". In the vast majority of cases it comes through fine, but if you ever notice a join/leave notification didn't arrive, that's the cause.
